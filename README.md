@@ -89,3 +89,4 @@ The project is organized into the following folders:
 *   **Services:** Contains the business logic of the application.
 *   **Utilities:** Contains utility classes and enums.
 
+----
