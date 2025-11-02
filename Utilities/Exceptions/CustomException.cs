@@ -6,7 +6,7 @@ namespace DigitalizeFabricationBussiness.Utilities.Exceptions;
 public class CustomException: Exception
 {
     public HttpStatusCode StatusCode { get; set; }
-    public string Message { get; set; } = string.Empty;
+    public new string Message { get; set; } = string.Empty;
     
     public string Code { get; set; } = string.Empty;
 

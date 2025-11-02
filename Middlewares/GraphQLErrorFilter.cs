@@ -1,12 +1,13 @@
-﻿using DigitalizeFabricationBussiness.Utilities.Exceptions;
+﻿using System.Net;
+using DigitalizeFabricationBussiness.Utilities.Exceptions;
 using HotChocolate;
+using HotChocolate.Execution;
 
 namespace DigitalizeFabricationBussiness.Middleware;
 
 /// <summary>
-/// Custom error filter for GraphQL errors
-/// Provides user-friendly error messages and removes stack traces from responses
-/// Handles authentication, authorization, and custom business logic exceptions
+/// Custom error filter for GraphQL errors.
+/// Removes GraphQL metadata (path, location) and adds business-friendly structure.
 /// </summary>
 public class GraphQLErrorFilter : IErrorFilter
 {
@@ -19,52 +20,59 @@ public class GraphQLErrorFilter : IErrorFilter
 
     public IError OnError(IError error)
     {
-        // Handle CustomException from business logic
+        // --- Handle business CustomException ---
         if (error.Exception is CustomException customException)
         {
-            return ErrorBuilder.New()
-                .SetMessage(customException.Message)
-                .SetExtension("statusCode", (int)customException.StatusCode)
-                .SetExtension("errorCode", customException.Code)
-                .Build();
+            return CreateFilteredError(
+                customException.Message,
+                (int)customException.StatusCode,
+                customException.Code
+            );
         }
 
-        // Handle authentication errors (no token or invalid token)
+        // --- Handle authentication (no token / invalid token) ---
         if (error.Code == "AUTH_NOT_AUTHENTICATED")
         {
             var httpContext = _httpContextAccessor.HttpContext;
             var hasToken = httpContext != null &&
-                          !string.IsNullOrEmpty(httpContext.Request.Headers["Authorization"]);
+                           !string.IsNullOrEmpty(httpContext.Request.Headers["Authorization"]);
 
-            var message = hasToken ? "Invalid token" : "Token not found";
+            var message = hasToken ? "Invalid or expired token" : "Authentication token missing";
 
-            return ErrorBuilder.New()
-                .SetMessage(message)
-                .SetExtension("statusCode", 401)
-                .SetExtension("errorCode", "UNAUTHORIZED")
-                .Build();
+            return CreateFilteredError(message, 401, "UNAUTHORIZED");
         }
 
-        // Handle authorization errors (valid token but insufficient permissions)
+        // --- Handle authorization errors ---
         if (error.Code == "AUTH_NOT_AUTHORIZED")
         {
-            return ErrorBuilder.New()
-                .SetMessage("You do not have permission to access this resource")
-                .SetExtension("statusCode", 403)
-                .SetExtension("errorCode", "FORBIDDEN")
-                .Build();
+            return CreateFilteredError(
+                "You do not have permission to access this resource",
+                403,
+                "FORBIDDEN"
+            );
         }
 
-        // Handle other exceptions - remove stack traces in production
+        // --- Default handling for other exceptions ---
         if (error.Exception != null)
         {
-            return ErrorBuilder.New()
-                .SetMessage(error.Exception.Message)
-                .SetExtension("statusCode", 500)
-                .SetExtension("errorCode", "ERROR")
-                .Build();
+            return CreateFilteredError(
+                error.Exception.Message,
+                500,
+                "INTERNAL_SERVER_ERROR"
+            );
         }
 
-        return error;
+        // --- Fallback (unmodified) ---
+        return CreateFilteredError(error.Message, 400, "BAD_REQUEST");
+    }
+
+    private static IError CreateFilteredError(string message, int statusCode, string errorCode)
+    {
+        // IMPORTANT: Do NOT set path or location
+        return ErrorBuilder.New()
+            .SetMessage(message)
+            .SetExtension("statusCode", statusCode)
+            .SetExtension("errorCode", errorCode)
+            .Build();
     }
 }

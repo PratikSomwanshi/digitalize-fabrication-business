@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "sGvyYNnxHvo=",
+  "dgSpecHash": "cS7fMWC6RLY=",
   "success": true,
   "projectFilePath": "D:\\dotnet\\DigitalizedFabricationBusiness\\DigitalizedFabricationBusiness\\DigitalizedFabricationBusiness.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Pratik Somwanshi\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\Pratik Somwanshi\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\Pratik Somwanshi\\.nuget\\packages\\chillicream.nitro.app\\28.0.7\\chillicream.nitro.app.28.0.7.nupkg.sha512",
     "C:\\Users\\Pratik Somwanshi\\.nuget\\packages\\greendonut\\15.1.11\\greendonut.15.1.11.nupkg.sha512",
     "C:\\Users\\Pratik Somwanshi\\.nuget\\packages\\greendonut.abstractions\\15.1.11\\greendonut.abstractions.15.1.11.nupkg.sha512",

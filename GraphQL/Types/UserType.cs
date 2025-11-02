@@ -65,7 +65,7 @@ public class UserType : ObjectType<User>
         // Configure Roles navigation property
         descriptor
             .Field(u => u.Roles)
-            .Description("List of roles assigned to the user");
+            .Ignore();
 
         // Configure Address navigation property
         descriptor

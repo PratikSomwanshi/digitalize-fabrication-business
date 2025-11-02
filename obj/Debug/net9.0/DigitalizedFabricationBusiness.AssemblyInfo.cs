@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DigitalizedFabricationBusiness")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+df156b79008b1c152c7e2e9574421b65349ba3bd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6c4a434948ea4268a9655142910dbc0af5c3b9ad")]
 [assembly: System.Reflection.AssemblyProductAttribute("DigitalizedFabricationBusiness")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DigitalizedFabricationBusiness")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -24,7 +24,7 @@ public class User: BaseEntity
     
     public List<Role> Roles { get; set; } = new();
     
-    public Address  Address { get; set; }
+        public Address?  Address { get; set;}
     
 }
 

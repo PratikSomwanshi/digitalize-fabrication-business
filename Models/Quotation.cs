@@ -6,7 +6,7 @@ public class Quotation : BaseEntity
 {
     public string QuotationId { get; set; } = string.Empty;
 
-    public Order Order { get; set; }
+        public Order? Order { get; set;}
 
     public List<string> QuotationDetails { get; set; } = new();
 

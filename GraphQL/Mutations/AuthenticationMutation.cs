@@ -1,43 +1,18 @@
-﻿using DigitalizeFabricationBussiness.GraphQL.InputTypes;
+using DigitalizeFabricationBussiness.DTOs;
+using DigitalizeFabricationBussiness.Services.Interface;
 
 namespace DigitalizedFabricationBusiness.GraphQL.Mutations;
 
 [ExtendObjectType("Mutation")]
 public class AuthenticationMutation
 {
-
-    public string MutationTest()
+    public async Task<UserOutputDTO> Register([Service] IUserService userService, UserInputDTO registerInput)
     {
-        return "Test";
+        return await userService.Register(registerInput);
     }
-//     public async Task<LoginResponse> Login(
-//         LoginInput input,
-//         [Service] IUserService userService)
-//     {
-//         // Validate input
-//         if (string.IsNullOrWhiteSpace(input.UserName))
-//         {
-//             throw new ArgumentException("Username is required", nameof(input.UserName));
-//         }
-//
-//         if (string.IsNullOrWhiteSpace(input.Password))
-//         {
-//             throw new ArgumentException("Password is required", nameof(input.Password));
-//         }
-//
-//         // Map GraphQL input to DTO
-//         // Note: LoginInputDTO uses primary constructor with Username (not UserName)
-//         var loginInputDto = new LoginInputDTO(input.UserName, input.Password);
-//
-//         // Authenticate user through service layer
-//         // Service will verify password and generate JWT token
-//         var loginOutput = await userService.Login(loginInputDto);
-//
-//         return new LoginResponse
-//         {
-//             Message = loginOutput.Message,
-//             Status = loginOutput.Status,
-//             Data = loginOutput.Data
-//         };
-//     }
+
+    public async Task<LoginOutputDTO> Login([Service] IUserService userService, LoginInputDTO loginInput)
+    {
+        return await userService.Login(loginInput);
+    }
 }

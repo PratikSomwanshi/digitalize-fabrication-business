@@ -8,7 +8,7 @@ public class Payment : BaseEntity
     
     public string OrderId { get; set; } = string.Empty;
     
-    public Order Order { get; set; }
+        public Order? Order { get; set;}
     
     public decimal Amount { get; set; }
     

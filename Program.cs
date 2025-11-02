@@ -3,18 +3,25 @@ using DigitalizedFabricationBusiness.GraphQL.AuthenticationQuery;
 using DigitalizedFabricationBusiness.GraphQL.Mutations;
 using DigitalizedFabricationBusiness.Middlewares;
 using DigitalizeFabricationBussiness.ApplicationDBContext;
+using DigitalizeFabricationBussiness.GraphQL.Types;
 using DigitalizeFabricationBussiness.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using DigitalizeFabricationBussiness.Services.Interface;
+using DigitalizeFabricationBussiness.Services;
+using DigitalizeFabricationBussiness.Repositories.Interface;
+using DigitalizeFabricationBussiness.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
 var configuration = builder.Configuration;
 
-builder.Services.AddPooledDbContextFactory<DigitalizeFabricationBusinessDBContext>(options =>
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddDbContext<DigitalizeFabricationBusinessDBContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -25,6 +32,7 @@ builder.Services
     .AddTypeExtension<AuthenticationQuery>()
     .AddMutationType<Mutation>()
     .AddTypeExtension<AuthenticationMutation>()
+    .AddType<UserType>()
     .AddProjections()
     .AddFiltering()
     .AddSorting()
@@ -54,7 +62,7 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-app.UseGlobalExceptionHandler(); // ✅ global REST + GraphQL exception handler
+app.UseGlobalExceptionHandler();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
