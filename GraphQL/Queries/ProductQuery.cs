@@ -3,7 +3,9 @@ using DigitalizeFabricationBussiness.Services.Interface;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DigitalizeFabricationBussiness.Models;
+using DigitalizeFabricationBussiness.Utilities.Enumes;
 using HotChocolate.Types;
+using HotChocolate.Authorization;
 
 namespace DigitalizedFabricationBusiness.GraphQL.Queries
 {
@@ -14,6 +16,7 @@ namespace DigitalizedFabricationBusiness.GraphQL.Queries
         {
             return await productService.GetProductById(productId);
         }
+
 
         [UsePaging(IncludeTotalCount = true)]
         [UseProjection]

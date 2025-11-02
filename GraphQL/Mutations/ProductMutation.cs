@@ -3,7 +3,7 @@ using DigitalizeFabricationBussiness.Services.Interface;
 using System.Threading.Tasks;
 using DigitalizeFabricationBussiness.Utilities.Enumes;
 using HotChocolate;
-using Microsoft.AspNetCore.Authorization;
+using HotChocolate.Authorization;
 
 namespace DigitalizedFabricationBusiness.GraphQL.Mutations
 {
@@ -11,12 +11,14 @@ namespace DigitalizedFabricationBusiness.GraphQL.Mutations
     public class ProductMutation
     {
         [GraphQLName("CreateProduct")]
-        [Authorize(Roles = nameof(RolesEnum.ADMIN))]
+        [Authorize(Roles = new[] { nameof(RolesEnum.ADMIN) })]
         public async Task<ProductOutputDTO> CreateProduct([Service] IProductService productService, ProductCreateDTO productInput)
         {
             return await productService.CreateProduct(productInput);
         }
 
+        [GraphQLName("UpdateProduct")]
+        [Authorize(Roles = new[] { nameof(RolesEnum.ADMIN) })]
         public async Task<ProductOutputDTO> UpdateProduct([Service] IProductService productService, string productId, ProductUpdateDTO productInput)
         {
             var updatedProduct = await productService.UpdateProduct(productId, productInput);
@@ -27,6 +29,8 @@ namespace DigitalizedFabricationBusiness.GraphQL.Mutations
             return updatedProduct;
         }
 
+        [GraphQLName("DeleteProduct")]
+        [Authorize(Roles = new[] { nameof(RolesEnum.ADMIN) })]
         public async Task<bool> DeleteProduct([Service] IProductService productService, string productId)
         {
             return await productService.DeleteProduct(productId);

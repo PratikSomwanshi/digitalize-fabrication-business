@@ -29,27 +29,6 @@ builder.Services.AddPooledDbContextFactory<DigitalizeFabricationBusinessDBContex
     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
 
-builder.Services
-    .AddGraphQLServer()
-    .AddAuthorization()
-    .AddQueryType<Query>()
-    .AddTypeExtension<AuthenticationQuery>()
-    .AddTypeExtension<ProductQuery>()
-    .AddMutationType<Mutation>()
-    .AddTypeExtension<AuthenticationMutation>()
-    .AddTypeExtension<ProductMutation>()
-    .AddType<UserType>()
-    .AddProjections()
-    .AddFiltering()
-    .AddSorting()
-    .ModifyPagingOptions(options =>
-    {
-        options.MaxPageSize = 100;
-        options.DefaultPageSize = 10;
-        options.IncludeTotalCount = true;
-    })
-    .AddErrorFilter<GraphQLErrorFilter>();
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -70,6 +49,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services
+    .AddGraphQLServer()
+    .AddAuthorization()
+    .AddQueryType<Query>()
+    .AddTypeExtension<AuthenticationQuery>()
+    .AddTypeExtension<ProductQuery>()
+    .AddMutationType<Mutation>()
+    .AddTypeExtension<AuthenticationMutation>()
+    .AddTypeExtension<ProductMutation>()
+    .AddType<UserType>()
+    .AddProjections()
+    .AddFiltering()
+    .AddSorting()
+    .ModifyPagingOptions(options =>
+    {
+        options.MaxPageSize = 100;
+        options.DefaultPageSize = 10;
+        options.IncludeTotalCount = true;
+    })
+    .AddErrorFilter<GraphQLErrorFilter>();
 
 
 var app = builder.Build();
